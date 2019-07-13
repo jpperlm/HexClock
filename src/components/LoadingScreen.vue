@@ -1,7 +1,7 @@
 <template>
   <div ref="loading" id="loading">
     <div ref="apptitle" id="apptitle" class="slowtransition">
-      Linguisti
+      Blocks
     </div>
     <div ref="appauthor" id="appauthor">
       <div id="intro-animation">
