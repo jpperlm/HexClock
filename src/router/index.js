@@ -6,9 +6,12 @@ Vue.use(Router)
 export default new Router({
   // eslint-disable-next-line no-extra-boolean-cast
   mode: window.location.href.includes('index.html') ? '' : 'history',
+  base: process.env.NODE_ENV === 'production'
+  ? '/Blocks/'
+  : '/',
   routes: [
     {
-      path: '/',
+      path: '*',
       name: 'Splash',
       component: Splash
     },

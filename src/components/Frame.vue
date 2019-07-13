@@ -1,5 +1,4 @@
 <template>
-<div class="full">
   <div
     v-if="loaded" 
     id="frame" 
@@ -15,8 +14,6 @@
       @clicked="moveWrapper(index-1)"
     />
   </div>
-  </div>
-  
 </template>
 
 <script>

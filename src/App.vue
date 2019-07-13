@@ -20,8 +20,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  height: 100vh;
-  width: 100vw;
+  background: #1e250b;
+  color: white;
+
+  height: calc(100vh - 4vw);
+  width: calc(100vw - 4vw);
+  padding: 2vw;
+
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -31,5 +36,16 @@ body {
 .full {
   height: 100%;
   width: 100%;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.flex-row-c-fe {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 }
 </style>

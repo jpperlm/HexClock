@@ -5,6 +5,8 @@
       'player': isPlayer,
       'teleporting': isTeleporting,
       'victory': isVictory,
+      'start': isStart,
+      'end': isEnd,
       'allow': allowMove
     }" 
     @click="$emit('clicked')"
@@ -42,6 +44,12 @@ export default {
     },
     isVictory() {
       return this.backgroundStyle === 'victory'
+    },
+    isStart() {
+      return this.text === 'Start'
+    },
+    isEnd() {
+      return this.text === 'Finish'
     }
   },
   watch: {
@@ -62,23 +70,32 @@ export default {
   flex-direction: column;
   justify-content: center;
 
-  background: black;
-  border: 1px solid white;
+  background: #401616;
+  border: 1px solid black;
   cursor: not-allowed;
   transition: background 0.5s ease;
-  color: white;
+  color: #83c41a;
 }
 
 .player {
-  background: red;
+  background: #1e250b;
 }
 
 .teleporting {
-  background: blue;
+  background: #b75a0b;
 }
 
 .victory {
-  background: green;
+  background: #11d620;
+  color: #1e250b;
+}
+
+.start {
+  color: #00dcff;
+}
+
+.end {
+  color: #00dcff;
 }
 
 .allow {
