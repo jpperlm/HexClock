@@ -3,37 +3,57 @@
     <template v-if="off">
       <instructions/>
       <button class="start-btn" @click="newMap"> Press To START</button>
-      <!-- <div class="clickable" @click="showSettings = !showSettings"> Settings </div> -->
+      <div class="settings-toggle">
+        <span class="clickable" @click="showSettings = !showSettings"> Settings </span>
+      </div>
       <div class="settings" v-if="showSettings">
         <div class="setting">
           <div class="settings-left">
-            <div class="flex-row-c-fe">
-              <div>
-              <input 
-                class="small-input" 
-                type="number" 
-                pattern="\d+" 
-                min="2"
-                max="10"
-                v-model="w"/>
-                </div>
-              <label class="num-label"> Blocks Wide </label>
+           <div class="flex-row spacing">
+              <div class="half-width">
+                <NumberInputSpinner
+                  :min="2"
+                  :max="10"
+                  :step="1"
+                  :integerOnly="true"
+                  v-model="w"
+                />
+              </div>
+              <div class="half-width settings-label"> Blocks Wide </div>
             </div>
-            <div class="flex-row-c-fe">
-              <div>
-              <input 
-                class="small-input" 
-                type="number" 
-                pattern="\d+" 
-                min="2"
-                max="10"
-                v-model="h"/>
-                </div>
-              <label class="num-label"> Blocks High </label>
+            <div class="flex-row spacing">
+              <div class="half-width">
+                <NumberInputSpinner
+                  :min="2"
+                  :max="10"
+                  :step="1"
+                  :integerOnly="true"
+                  v-model="h"
+                />
+              </div>
+              <div class="half-width settings-label"> Blocks High </div>
             </div>
           </div>
           <div class="settings-right">
-            <span> error </span>
+            <span class="error" v-if="!isEven"> The grid must contain an even number of tiles. Currently it contains {{ w * h }} tiles. </span>
+          </div>
+        </div>
+        <div class="setting">
+          <div class="settings-left">
+           <div class="flex-row spacing">
+              <div class="half-width">
+                <NumberInputSpinner
+                  :min="2"
+                  :max="50"
+                  :step="1"
+                  :integerOnly="true"
+                  v-model="numCharacters"
+                />
+              </div>
+              <div class="half-width settings-label"> Characters </div>
+            </div>
+          </div>
+          <div class="settings-right">
           </div>
         </div>
       </div>
@@ -51,18 +71,22 @@ import { helpers } from '@/js/helper'
 import Frame from '@/components/Frame.vue'
 import Instructions from '@/components/Instructions.vue'
 
+import NumberInputSpinner from 'vue-number-input-spinner'
+
 export default {
   name: 'Splash',
   mixins: [helpers],
   components: {
     frame: Frame,
     instructions: Instructions,
+    NumberInputSpinner,
   },
   mounted () { 
     this.characters = this.$store.state.languageStore.languageOptions.hiragana.alphabet;
   },
   methods: {
     newMap(){
+      if (!this.isEven) return;
       this.generateMap();
       this.off = false;
     },
@@ -73,14 +97,17 @@ export default {
     }
   },
   computed: {
+    isEven() {
+      return (( this.w * this.h ) % 2) === 0
+    },
     generatorOptions() {
       return {
-          w: 4, 
-          h: 4, 
+          w: this.w, 
+          h: this.h, 
           characters: this.characters,
-          numCharacters: 5,
-          minSteps: 4,
-          maxSteps: 12,
+          numCharacters: this.numCharacters,
+          minSteps: 3,
+          maxSteps: 8,
         }
     }
   },
@@ -90,7 +117,8 @@ export default {
       showSettings: false,
       tileMap:[],
       characters:[],
-      w:4,
+      numCharacters:5,
+      w:3,
       h:4,
       // tileMap: [
       //   ['START',{key:1, displayText:'a'}, {key:4, displayText:'た'}, {key:3, displayText:'sa'}],
@@ -110,6 +138,7 @@ export default {
 .settings {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   max-width: 500px;
   margin: auto;
 }
@@ -128,6 +157,24 @@ export default {
 .num-label {
   width: 100px;
 }
+.settings-label {
+  font-size: 1.3em;
+  margin: auto;
+}
+.spacing {
+  margin-bottom: 8px;
+}
+
+.error {
+  color: red;
+  font-size: .9em;
+}
+
+ {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
 .start-btn {
 	-moz-box-shadow:inset 0px 1px 0px 0px #d9fbbe;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #d9fbbe;

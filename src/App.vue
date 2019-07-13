@@ -48,4 +48,13 @@ body {
   justify-content: flex-end;
   align-items: center;
 }
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.half-width {
+  width: 50%;
+}
 </style>
