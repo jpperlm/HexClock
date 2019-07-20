@@ -10,6 +10,8 @@
       :backgroundStyle="getBackgroundStyle(index-1)"
       :text="getText(index-1)"
       :key="index-1"
+      :isCurrent="index-1===playerLocationIndex"
+      :movesRemaining="movesRemaining"
       :allowMove="isMoveAllowed(index-1)"
       @clicked="moveWrapper(index-1)"
     />
@@ -31,6 +33,9 @@ export default {
     tileMap: {
       type: Array
     },
+    solution: {
+      type: Array
+    }
   },
   methods: {
     getBackgroundStyle(index) {
@@ -50,6 +55,7 @@ export default {
       if (this.disableMove) return;
       if (this.isMoveAllowed(index)) {
         this.disableMove = true;
+        this.incrementMoveCounter();
         this.moveTo(index)
       }
     },
@@ -64,7 +70,7 @@ export default {
           this.$emit('gameOver')
         }, 1000);
       } else if (this.currentTile === 0 || this.currentTile === '' || index === this.startIndex) {
-        return this.enableMove();
+        return this.checkOutOfMoves();
       } else if (typeof this.currentTile === 'object') {
         const key = this.currentTile.key;
         const newInd = this.flatTileMap
@@ -77,7 +83,7 @@ export default {
             this.playerLocationIndex = newInd;
             this.jumpIndex = undefined;
             setTimeout(() => {
-              this.enableMove();
+              this.checkOutOfMoves();
             }, 200);
           }, 400);
          
@@ -105,6 +111,24 @@ export default {
     enableMove() {
       this.disableMove = false;
     },
+    incrementMoveCounter() {
+      this.movesTaken ++;
+    },
+    checkOutOfMoves() {
+      if (this.movesRemaining <= 0) {
+        return this.restart();
+      }
+      this.enableMove();
+    },
+    restart() {
+      this.jumpIndex = undefined;
+      this.playerLocationIndex = this.startIndex;
+      this.disableMove = false;
+      this.movesTaken = 0;
+      setTimeout(() => {
+        this.enableMove();
+      }, 400);
+    },
     addKeyboardListener() {
       document.addEventListener('keydown', this.keyPressed);
     },
@@ -117,6 +141,7 @@ export default {
       jumpIndex: undefined,
       playerLocationIndex: undefined,
       disableMove: false,
+      movesTaken:0,
     }
   },
   computed: {
@@ -160,6 +185,9 @@ export default {
     currentTile() {
       return this.flatTileMap[this.playerLocationIndex]
     },
+    movesRemaining() {
+      return this.solution.length - this.movesTaken
+    }
   },
   watch: {
   },

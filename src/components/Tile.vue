@@ -11,6 +11,8 @@
     }" 
     @click="$emit('clicked')"
   >
+    <span id="movesRemaining" v-if="text">{{isCurrent ? movesRemaining : ''}}</span>
+    <span v-else>{{isCurrent ? movesRemaining : ''}}</span>
     <span ref="tileText">{{text}}</span>
   </div>
 </template>
@@ -30,6 +32,12 @@ export default {
     },
     allowMove: {
       type: Boolean
+    },
+    isCurrent: {
+      type: Boolean
+    },
+    movesRemaining: {
+      type: Number
     },
     text: {
       type: String
@@ -102,6 +110,12 @@ export default {
   /* border: 20px solid green; */
   /* background: orange; */
   cursor: pointer;
+}
+
+#movesRemaining {
+  position: relative;
+  left: -45%;
+  height: 0px;
 }
 
 </style>

@@ -61,6 +61,7 @@
     <frame 
       v-else-if="tileMap.length"
       :tileMap="tileMap"
+      :solution="solution"
       @gameOver="off=true"
     />
   </div>
@@ -94,6 +95,7 @@ export default {
       let { board, solution } = 
         this.generator(this.generatorOptions);
       this.tileMap = board;
+      this.solution = solution;
     }
   },
   computed: {
@@ -116,6 +118,7 @@ export default {
       off: true,
       showSettings: false,
       tileMap:[],
+      solution:[],
       characters:[],
       numCharacters:5,
       w:3,
