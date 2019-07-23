@@ -54,6 +54,12 @@ body {
   flex-direction: row;
 }
 
+.flex-col-c {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .half-width {
   width: 50%;
 }

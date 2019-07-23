@@ -16,13 +16,13 @@ export const helpers = {
       }
       return array
     },
-    quick_fit (element, max) {
-      let container = element.parentElement;
+    quick_fit (args) {
+      let {element, container,  max} = args;
+      container = container || element.parentElement;
       let larger = Math.max(element.offsetWidth, element.offsetHeight)
       let ratio = (container.offsetWidth) / (larger * 1.1)
       let toUse = ratio > max ? max : ratio;
       element.style.fontSize = toUse + 'em'
-      container.style.display='flex'
       return toUse
     },
     randomLetterIndex () {

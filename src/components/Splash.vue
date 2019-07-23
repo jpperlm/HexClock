@@ -120,9 +120,9 @@ export default {
       tileMap:[],
       solution:[],
       characters:[],
-      numCharacters:5,
-      w:3,
-      h:4,
+      numCharacters:10,
+      w:10,
+      h:10,
       // tileMap: [
       //   ['START',{key:1, displayText:'a'}, {key:4, displayText:'た'}, {key:3, displayText:'sa'}],
       //   [{key:2, displayText:'ka'},{key:3, displayText:'さ'},{key:4, displayText:'ta'},{key:5, displayText:'na'}],
@@ -171,11 +171,6 @@ export default {
 .error {
   color: red;
   font-size: .9em;
-}
-
- {
-  margin-top: 15px;
-  margin-bottom: 15px;
 }
 
 .start-btn {

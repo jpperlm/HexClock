@@ -11,9 +11,16 @@
     }" 
     @click="$emit('clicked')"
   >
-    <span id="movesRemaining" v-if="text">{{isCurrent ? movesRemaining : ''}}</span>
-    <span v-else>{{isCurrent ? movesRemaining : ''}}</span>
-    <span ref="tileText">{{text}}</span>
+    <div id="movesContainer" class="movesRemaining">
+      <span>{{isCurrent ? movesRemaining : ''}}</span>
+    </div>
+    <div class="main-text flex-col-c">
+      <div>
+        <span ref="tileText">{{text}}</span>
+      </div>
+    </div>
+    <!-- <div v-if="!isCurrent" class="movesRemaining">
+    </div> -->
   </div>
 </template>
 
@@ -65,7 +72,10 @@ export default {
   beforeDestroy () {
   },
   mounted () {
-    this.quick_fit(this.$refs.tileText, 3)
+    const element = this.$refs.tileText;
+    const container = element.closest('.main-text');
+    const max = 3;
+    this.quick_fit({element, container, max})
   },
   methods: {
   }
@@ -75,9 +85,9 @@ export default {
 <style scoped>
 
 .tile {
+  display: flex;
   flex-direction: column;
-  justify-content: center;
-
+  justify-content: space-between;
   background: #401616;
   border: 1px solid black;
   cursor: not-allowed;
@@ -107,15 +117,15 @@ export default {
 }
 
 .allow {
-  /* border: 20px solid green; */
-  /* background: orange; */
   cursor: pointer;
 }
 
-#movesRemaining {
-  position: relative;
-  left: -45%;
-  height: 0px;
+.movesRemaining{
+  position:fixed;
+}
+
+.main-text{
+  flex: 1;
 }
 
 </style>
