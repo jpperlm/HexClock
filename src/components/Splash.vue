@@ -120,9 +120,9 @@ export default {
       tileMap:[],
       solution:[],
       characters:[],
-      numCharacters:10,
-      w:10,
-      h:10,
+      numCharacters:7,
+      w:5,
+      h:4,
       // tileMap: [
       //   ['START',{key:1, displayText:'a'}, {key:4, displayText:'た'}, {key:3, displayText:'sa'}],
       //   [{key:2, displayText:'ka'},{key:3, displayText:'さ'},{key:4, displayText:'ta'},{key:5, displayText:'na'}],
