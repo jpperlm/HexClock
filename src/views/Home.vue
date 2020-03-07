@@ -6,16 +6,34 @@
       :style="getBackgroundColor(hex_clock[hex_clock.length - 1])"
     >
       <span class="hex-text"> #{{ hex_clock[hex_clock.length - 1] }} </span>
+      <span class="hex-text">
+        {{ getTime(hex_clock[hex_clock.length - 1]) }}
+      </span>
     </div>
     <div v-if="additional_to_show" :style="bottomGridStyle" class="half-height">
       <div
-        v-for="hex in hex_without_last"
+        v-for="hex in hexWithoutLastItem"
         :key="hex"
         :style="getBackgroundColor(hex)"
         class="part"
       >
-        <span class="hex-text-vert"> #{{ hex }} </span>
+        <span class="hex-text-vert" v-if="additional_to_show < 20">
+          #{{ hex }}
+        </span>
       </div>
+    </div>
+    <div id="button-row">
+      <button @click="decrement" v-if="additional_to_show > 0">
+        show less
+      </button>
+      <span v-else></span>
+      <button @click="clear" v-if="additional_to_show > 0">
+        clear
+      </button>
+      <span v-else></span>
+      <button @click="increment">
+        show more
+      </button>
     </div>
   </div>
 </template>
@@ -27,6 +45,11 @@ export default {
     this.setup();
     this.step();
   },
+  watch: {
+    additional_to_show(n, o) {
+      this.setup();
+    }
+  },
   components: {},
   computed: {
     bottomGridStyle() {
@@ -37,12 +60,13 @@ export default {
     currentHexDivClass() {
       return !this.additional_to_show ? 'full-size' : 'half-height';
     },
-    hex_without_last() {
+    hexWithoutLastItem() {
       return this.hex_clock.slice(0, this.hex_clock.length - 1);
     }
   },
   methods: {
     setup() {
+      this.hex_clock = [];
       for (var i = 0; i >= -this.additional_to_show; i--) {
         this.hex_clock.unshift(this.getCurrentHexVal(i));
       }
@@ -54,11 +78,11 @@ export default {
       const hrs = ~~(time / 3600);
       const mins = ~~((time % 3600) / 60);
       const secs = ~~time % 60;
-      return `${this.padStart(hrs, 2, '0')}${this.padStart(mins, 2, '0')}${this.padStart(
-        secs,
+      return `${this.padStart(hrs, 2, '0')}${this.padStart(
+        mins,
         2,
         '0'
-      )}`;
+      )}${this.padStart(secs, 2, '0')}`;
       // .toString()
       // .padStart(6, '0');
       return val;
@@ -81,14 +105,40 @@ export default {
       this.expected_time += this.interval;
       setTimeout(this.step, Math.max(0, this.interval - dt)); // take into account drift
     },
+    increment() {
+      if (this.additional_to_show < 10) {
+        this.additional_to_show++;
+      } else {
+        this.additional_to_show += 10;
+      }
+    },
+    decrement() {
+      if (this.additional_to_show > 10) {
+        this.additional_to_show -= 10;
+      } else if (this.additional_to_show > 0) {
+        this.additional_to_show--;
+      }
+    },
+    clear() {
+      this.additional_to_show = 0;
+    },
     getBackgroundColor(hex) {
       return `background-color: #${hex}`;
+    },
+    getTime(hex) {
+      if (!hex) {
+        return;
+      }
+      let hours = hex.substr(0, 2);
+      let mins = hex.substr(2, 2);
+      let seconds = hex.substr(4, 2);
+      return `( ${hours}:${mins}:${seconds} )`;
     }
   },
   data() {
     return {
       hex_clock: [],
-      additional_to_show: 9,
+      additional_to_show: 0,
       expected_time: 0,
       interval: 300
     };
@@ -107,8 +157,8 @@ export default {
 
 #currentHexDiv {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
 }
 .full-size {
@@ -151,5 +201,36 @@ export default {
   letter-spacing: 0.6rem;
   writing-mode: vertical-rl;
   text-orientation: upright;
+}
+
+#button-row {
+  position: absolute;
+  top: 10px;
+  left: 2.5vw;
+  width: 95vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+button {
+  width: 60px;
+  background: linear-gradient(to bottom, #191f19 5%, #2b702b 100%);
+  background-color: #191f19;
+  border-radius: 28px;
+  border: 1px solid #83b387;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  /* font-size:17px; */
+  /* padding:16px 31px; */
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #000000;
+}
+
+button:hover {
+  background: linear-gradient(to bottom, #2b702b 5%, #191f19 100%);
+  background-color: #2b702b;
 }
 </style>
