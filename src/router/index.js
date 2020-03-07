@@ -14,7 +14,10 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: '/HexClock/',
+  base: process.env.NODE_ENV === 'production'
+  ? '/HexClock/'
+  : '/',
   routes
 })
 
